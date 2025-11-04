@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author Biographies & Videos</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #BD4B37 0%, #F04D32 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .authors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .author-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .author-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .author-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid #6a11cb;
+        }
+        
+        .author-info {
+            padding: 1.5rem;
+        }
+        
+        .author-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        .author-dates {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .author-bio {
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .qrcode-section {
+            text-align: center;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        
+        .qrcode-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #6a11cb;
+        }
+        
+        .qrcode-container {
+            display: inline-block;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #2575fc;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .video-link:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #2c3e50;
+            color: white;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .authors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PERSONALIDADES NEGRAS E INDÍGENAS</h1>
+        <p class="subtitle">Explore the lives of famous authors and watch videos about their work</p>
+    </header>
+    
+    <div class="container">
+        <div class="authors-grid" id="authors-container">
+            <!-- Author cards will be generated here -->
+        </div>
+    </div>
+    
+    <footer>
+        <p>Created with HTML, CSS, and JavaScript | Free to use</p>
+    </footer>
+
+    <script>
+        // Sample author data
+        const authors = [
+            {
+                id: 1,
+                name: "Jane Austen",
+                birthDate: "1775-12-16",
+                deathDate: "1817-07-18",
+                bio: "Jane Austen was an English novelist known primarily for her six major novels, which interpret, critique and comment upon the British landed gentry at the end of the 18th century.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                videoUrl: "https://www.youtube.com/watch?v=KkAn5WgqTk4"
+            },
+            {
+                id: 2,
+                name: "Ernest Hemingway",
+                birthDate: "1899-07-21",
+                deathDate: "1961-07-02",
+                bio: "Ernest Hemingway was an American novelist, short-story writer, journalist, and sportsman. His economical and understated style had a strong influence on 20th-century fiction.",
+                image: "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                videoUrl: "https://www.youtube.com/watch?v=0TkHRKuR-YI"
+            },
+            {
+                id: 3,
+                name: "Virginia Woolf",
+                birthDate: "1882-01-25",
+                deathDate: "1941-03-28",
+                bio: "Virginia Woolf was an English writer, considered one of the most important modernist 20th-century authors and a pioneer in the use of stream of consciousness as a narrative device.",
+                image: "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                videoUrl: "https://www.youtube.com/watch?v=O9cw1y5kCgQ"
+            },
+            {
+                id: 4,
+                name: "Gabriel García Márquez",
+                birthDate: "1927-03-06",
+                deathDate: "2014-04-17",
+                bio: "Gabriel García Márquez was a Colombian novelist, short-story writer, screenwriter and journalist, known affectionately as Gabo throughout Latin America.",
+                image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                videoUrl: "https://www.youtube.com/watch?v=J9lOc4iZx6s"
+            },
+            {
+                id: 5,
+                name: "Toni Morrison",
+                birthDate: "1931-02-18",
+                deathDate: "2019-08-05",
+                bio: "Toni Morrison was an American novelist, essayist, book editor, and college professor. Her first novel, The Bluest Eye, was published in 1970.",
+                image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                videoUrl: "https://www.youtube.com/watch?v=uR8S2bqZR6E"
+            },
+            {
+                id: 6,
+                name: "Haruki Murakami",
+                birthDate: "1949-01-12",
+                deathDate: null,
+                bio: "Haruki Murakami is a Japanese writer. His books and stories have been bestsellers in Japan as well as internationally, with his work being translated into 50 languages.",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                videoUrl: "https://www.youtube.com/watch?v=fK1Mh384bQ8"
+            }
+        ];
+
+        // Function to generate QR code
+        function generateQRCode(elementId, text) {
+            QRCode.toCanvas(document.getElementById(elementId), text, function (error) {
+                if (error) console.error(error);
+            });
+        }
+
+        // Function to format date
+        function formatDate(dateString) {
+            if (!dateString) return "Present";
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Function to create author cards
+        function createAuthorCards() {
+            const container = document.getElementById('authors-container');
+            
+            authors.forEach(author => {
+                const card = document.createElement('div');
+                card.className = 'author-card';
+                
+                card.innerHTML = `
+                    <img src="${author.image}" alt="${author.name}" class="author-image">
+                    <div class="author-info">
+                        <h2 class="author-name">${author.name}</h2>
+                        <p class="author-dates">${formatDate(author.birthDate)} - ${formatDate(author.deathDate)}</p>
+                        <p class="author-bio">${author.bio}</p>
+                    </div>
+                    <div class="qrcode-section">
+                        <p class="qrcode-title">Scan to watch video</p>
+                        <div class="qrcode-container">
+                            <canvas id="qrcode-${author.id}"></canvas>
+                        </div>
+                        <a href="${author.videoUrl}" target="_blank" class="video-link">Or click to watch directly</a>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+                
+                // Generate QR code after the card is added to the DOM
+                setTimeout(() => {
+                    generateQRCode(`qrcode-${author.id}`, author.videoUrl);
+                }, 100);
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', createAuthorCards);
+    </script>
+</body>
+</html>
